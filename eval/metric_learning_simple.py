@@ -80,11 +80,6 @@ def _eval_cmc(PX, PY, GX, GY, M):
     C = cmc(D, GY, PY)
     return C
 
-def _eval_cmc_1(PX, PY, GX, GY):
-    D = pairwise_distances(GX, PX, metric='mahalanobis',n_jobs=-2)
-    C = cmc(D, GY, PY)
-    return C
-
 
 def main(args):
     X, Y = _get_train_data_my(args.result_dir)
@@ -92,7 +87,6 @@ def main(args):
     file_suffix = args.method
     M = _learn_metric(X, Y, args.method)
     C = _eval_cmc(PX, PY, GX, GY, M)
-    #C = _eval_cmc_1(PX, PY, GX, GY) 
     np.save(osp.join(args.result_dir, 'metric_' + file_suffix), M)
     np.save(osp.join(args.result_dir, 'cmc_' + file_suffix), C)
 

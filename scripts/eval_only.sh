@@ -47,7 +47,6 @@ extract_features() {
     local model=$(mktemp)
     sed -e "s/\${dataset}/${dataset}/g; s/\${subset}/${subset}/g" \
       ${MODELS_DIR}/${exp}/exfeat_template.prototxt > ${model}
-    echo ${model}
     echo "exfeat_template" ${MODELS_DIR}/${exp}/exfeat_template.prototxt
     ${CAFFE_DIR}/build/tools/extract_features \
       ${trained_model} ${model} ${blob},label \
@@ -69,15 +68,15 @@ trained_model=/home/nikoong/Algorithm_test/attribute/external/exp/snapshots/base
 
 
 # Extract features on all datasets
-for dataset in DukeMTMC-reID; do
-  extract_features ${exp} ${dataset} ${trained_model}
-done
+#for dataset in DukeMTMC-reID; do
+#  extract_features ${exp} ${dataset} ${trained_model}
+#done
 
 # Evaluate performance
 for dataset in DukeMTMC-reID; do
   result_dir=$(get_result_dir ${exp} ${dataset} ${trained_model})
   echo ${dataset}
-  python2 eval/metric_learning.py ${result_dir}
+  python2 eval/metric_learning_simple.py ${result_dir}
   echo
 done
 
