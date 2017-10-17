@@ -1,0 +1,24 @@
+net: "models/attribute/DUCK_trainval.prototxt"
+test_iter: 500
+test_interval: 30000
+test_initialization: true
+
+display: 20
+average_loss: 20
+iter_size: 2
+
+lr_policy: "poly"
+power: 0.5
+base_lr: 0.1
+gamma: 0.9
+max_iter: 30000
+
+momentum: 0.9
+weight_decay: 0.0005
+
+snapshot: 5000
+snapshot_prefix: "external/exp/snapshots/attribute/DUCK"
+solver_mode: GPU
+
+
+
