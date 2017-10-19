@@ -11,7 +11,7 @@ layer {
   }
   image_data_param {
     batch_size: 45
-    source: "/home/nikoong/Algorithm_test/attribute/external/exp/dataset/DukeMTMC-reID/train.txt"
+    source: "/home/nikoong/Algorithm_test/attribute/external/exp/dataset/Market-1501/train.txt"
     new_height: 144
     new_width: 56
     shuffle: true
@@ -33,7 +33,7 @@ layer {
   }
   image_data_param {
     batch_size: 20
-    source: "/home/nikoong/Algorithm_test/attribute/external/exp/dataset/DukeMTMC-reID/train.txt"
+    source: "/home/nikoong/Algorithm_test/attribute/external/exp/dataset/Market-1501/train.txt"
     new_height: 144
     new_width: 56
     shuffle: true
@@ -497,7 +497,7 @@ layer { name: "drop7" type: "Dropout" bottom: "fc7_bn" top: "fc7_bn"
 ####################################### loss accuracy #######################################
 layer { name: "fc8_jstl" type: "InnerProduct" bottom: "fc7_bn" top: "fc8_jstl"
   param { lr_mult: 1 decay_mult: 1 } param { lr_mult: 2 decay_mult: 0 }
-  inner_product_param { num_output: 702
+  inner_product_param { num_output: 751
     weight_filler { type: "gaussian" std: 0.001 }
     bias_filler { type: "constant" value: 0 } } }
 layer { name: "loss" type: "SoftmaxWithLoss" bottom: "fc8_jstl" bottom: "label" top: "loss" }

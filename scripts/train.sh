@@ -3,13 +3,13 @@
 
 # Change to the project root directory. Assume this file is at scripts/.
 cd $(dirname ${BASH_SOURCE[0]})/../
-source scripts/routines.sh
+#source scripts/routines.sh
 
 
 
-exp='attribute'
-log_name=attribute_DUCK
-solver=/home/nikoong/Algorithm_test/dgd_person_reid/models/${exp}/solver.prototxt
+exp='baseline'
+log_name=market
+solver=/home/nikoong/Algorithm_test/attribute/models/${exp}/solver.prototxt
 
 
 log=logs/${exp}/${log_name}-`date +%Y-%m-%d-%H-%M`.log

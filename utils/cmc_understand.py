@@ -3,7 +3,7 @@ import numpy as np
 
 def _cmc_core(D, G, P):
     m, n = D.shape
-    order = np.argsort(D, axis=0)#½«D°´ÁĞ´ÓĞ¡µ½´óÅÅĞò
+    order = np.argsort(D, axis=0)#å°†DæŒ‰åˆ—ä»å°åˆ°å¤§æ’åº
     match = (G[order] == P) 
     return (match.sum(axis=1) * 1.0 / n).cumsum()#
 
@@ -37,18 +37,18 @@ def cmc(distmat, glabels=None, plabels=None, ds=None, repeat=None):
         The rank-1 to rank-m accuracy, where m is the number of (downsampled)
         gallery labels.
     """
-    m, n = distmat.shape#m=glabelÊıÁ¿,n=plabelÊıÁ¿
+    m, n = distmat.shape#m=glabelæ•°é‡,n=plabelæ•°é‡
     if glabels is None and plabels is None:
-        glabels = np.arange(0, m) #0µ½m-1
-        plabels = np.arange(0, n) #0µ½n-1
+        glabels = np.arange(0, m) #0åˆ°m-1
+        plabels = np.arange(0, n) #0åˆ°n-1
     if isinstance(glabels, list):
         glabels = np.asarray(glabels)
     if isinstance(plabels, list):
         plabels = np.asarray(plabels)
-    ug = np.unique(glabels) #ugÊÇglabelÈ¥³ıÖØ¸´idÖ®ºóµÄÊı×é
+    ug = np.unique(glabels) #ugæ˜¯glabelå»é™¤é‡å¤idä¹‹åçš„æ•°ç»„
     if ds is None:
-        ds = ug.size #downsamplingÔÚglabels
-    if repeat is None: #Èç¹ûlabelÀïÃæÃ»ÓĞidÖØ¸´£¬ÇÒÃ»ÓĞÏÂ²ÉÑù£¬ÔòÖ»ÔËĞĞÒ»´Î£»·ñÔò100´Î¡£
+        ds = ug.size #downsamplingåœ¨glabels
+    if repeat is None: #å¦‚æœlabelé‡Œé¢æ²¡æœ‰idé‡å¤ï¼Œä¸”æ²¡æœ‰ä¸‹é‡‡æ ·ï¼Œåˆ™åªè¿è¡Œä¸€æ¬¡ï¼›å¦åˆ™100æ¬¡ã€‚
         if ds == ug.size and ug.size == len(glabels):
             repeat = 1
         else:
@@ -57,16 +57,16 @@ def cmc(distmat, glabels=None, plabels=None, ds=None, repeat=None):
     ret = 0
     for __ in xrange(repeat):
         # Randomly select gallery labels e.g.downsampling
-        G = np.random.choice(ug, ds, replace=False)# ÕıÊ½µÄgalleryidÊı×é£¬Èô²»ÏÂ²ÉÑù G = ug
+        G = np.random.choice(ug, ds, replace=False)# æ­£å¼çš„galleryidæ•°ç»„ï¼Œè‹¥ä¸ä¸‹é‡‡æ · G = ug
         # Select corresponding probe samples
-        p_inds = [i for i in xrange(len(plabels)) if plabels[i] in G]#plableÖĞÔÚGÖĞ³öÏÖ¹ıµÄÔªËØË÷Òı
-        P = plabels[p_inds]#ÕıÊ½µÄProbe id £ºplableÖĞÔÚGÖĞ³öÏÖ¹ıµÄÔªËØ
+        p_inds = [i for i in xrange(len(plabels)) if plabels[i] in G]#plableä¸­åœ¨Gä¸­å‡ºç°è¿‡çš„å…ƒç´ ç´¢å¼•
+        P = plabels[p_inds]#æ­£å¼çš„Probe id ï¼šplableä¸­åœ¨Gä¸­å‡ºç°è¿‡çš„å…ƒç´ 
         # Randomly select one gallery sample per label selected
         D = np.zeros((ds, P.size))
-        for i, g in enumerate(G):#iÊÇË÷Òı£¬gÊÇÔªËØ
-            samples = np.where(glabels == g)[0] #·µ»ØÔÚGÖĞ³öÏÖµÄglabelsµÄidµÄË÷Òı£¬¿ÉÄÜÓĞ¶à¸öÎ»ÖÃ
-            j = np.random.choice(samples) #¶à¸öÎ»ÖÃÖĞÈ¡Ò»¸ö
-            D[i, :] = distmat[j, p_inds] #Éú³ÉĞÂ¾àÀë¾ØÕóD£¬×İÖáÊÇg,ºáÖáÊÇp; D[i,j]=¾àÀë£¨G[i],P[j]£©
+        for i, g in enumerate(G):#iæ˜¯ç´¢å¼•ï¼Œgæ˜¯å…ƒç´ 
+            samples = np.where(glabels == g)[0] #è¿”å›åœ¨Gä¸­å‡ºç°çš„glabelsçš„idçš„ç´¢å¼•ï¼Œå¯èƒ½æœ‰å¤šä¸ªä½ç½®
+            j = np.random.choice(samples) #å¤šä¸ªä½ç½®ä¸­å–ä¸€ä¸ª
+            D[i, :] = distmat[j, p_inds] #ç”Ÿæˆæ–°è·ç¦»çŸ©é˜µDï¼Œçºµè½´æ˜¯g,æ¨ªè½´æ˜¯p; D[i,j]=è·ç¦»ï¼ˆG[i],P[j]ï¼‰
         # Compute CMC
         ret += _cmc_core(D, G, P)
     return ret / repeat
